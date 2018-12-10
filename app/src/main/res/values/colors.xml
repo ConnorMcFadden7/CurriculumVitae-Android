@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- Curriculum Vitae Screen -->
+    <color name="grey_separator">#ccc</color>
+
 </resources>

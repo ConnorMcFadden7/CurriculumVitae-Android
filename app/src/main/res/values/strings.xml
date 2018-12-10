@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">CurriculumVitae</string>
+
+    <!-- Curriculum Vitae Screen -->
+    <string name="curriculum_vitae_app_highlight_label">App Highlight</string>
+    <string name="curriculum_vitae_technical_experience_label">Technical Experience</string>
+    <string name="curriculum_vitae_employment_history_label">Employment History</string>
+    <string name="curriculum_vitae_education_label">Education</string>
+    <string name="curriculum_vitae_job_title">%1$s, %2$s, %3$s - %4$s - %5$s</string>
+    <string name="curriculum_vitae_education_title">%1$s, %2$s - %3$s</string>
+    <string name="curriculum_vitae_hobbies_and_interests_label">Hobbies &amp; Interests</string>
+    <string name="curriculum_vitae_references_available_label">REFERENCES AVAILABLE UPON REQUEST</string>
 </resources>
