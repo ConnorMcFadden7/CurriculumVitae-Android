@@ -3,19 +3,11 @@ package com.curriculumvitae.android.view.activity
 import android.arch.lifecycle.Observer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import android.widget.TextView
 import com.curriculumvitae.android.R
 import com.curriculumvitae.android.data.model.CurriculumVitae
-import com.curriculumvitae.android.view.adapter.AppHighlightAdapter
-import com.curriculumvitae.android.view.adapter.EducationAdapter
-import com.curriculumvitae.android.view.adapter.EmploymentHistoryAdapter
-import com.curriculumvitae.android.view.adapter.TechnicalExperienceAdapter
 import com.curriculumvitae.android.view.viewmodel.MainViewModel
+import com.curriculumvitae.android.view.viewslice.*
 import dagger.android.AndroidInjection
-import kotterknife.bindView
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -23,87 +15,86 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModel: MainViewModel
     @Inject
-    lateinit var appHighlightAdapter: AppHighlightAdapter
+    lateinit var viewSliceHelper: ViewSliceHelper
     @Inject
-    lateinit var technicalExperienceAdapter: TechnicalExperienceAdapter
+    lateinit var mainViewSlice: MainViewSlice
     @Inject
-    lateinit var employmentHistoryAdapter: EmploymentHistoryAdapter
+    lateinit var personDetailsViewSlice: PersonDetailsViewSlice
     @Inject
-    lateinit var educationAdapter: EducationAdapter
+    lateinit var appHighlightViewSlice: AppHighlightViewSlice
+    @Inject
+    lateinit var technicalExperienceViewSlice: TechnicalExperienceViewSlice
+    @Inject
+    lateinit var employmentHistoryViewSlice: EmploymentHistoryViewSlice
+    @Inject
+    lateinit var educationViewSlice: EducationViewSlice
+    @Inject
+    lateinit var hobbiesAndInterestsViewSlice: HobbiesAndInterestsViewSlice
 
-    private var llmAppHighlight: LinearLayoutManager = LinearLayoutManager(this)
-    private var llmTechnicalExperience: LinearLayoutManager = LinearLayoutManager(this)
-    private var llmEmploymentHistory: LinearLayoutManager = LinearLayoutManager(this)
-    private var llmEducation: LinearLayoutManager = LinearLayoutManager(this)
-
-    //todo if i have time split this up into separate views
-    val tvPersonName: TextView by bindView(R.id.tv_person_name)
-    val tvPersonExperience: TextView by bindView(R.id.tv_person_experience)
-    val tvPersonEmail: TextView by bindView(R.id.tv_person_email)
-    val rvAppHighlights: RecyclerView by bindView(R.id.rv_app_highlight)
-    val rvTechnicalExperience: RecyclerView by bindView(R.id.rv_technical_experience)
-    val rvEmploymentHistory: RecyclerView by bindView(R.id.rv_employment_history)
-    val rvEducation: RecyclerView by bindView(R.id.rv_education)
-    val tvPersonDetails: TextView by bindView(R.id.tv_person_details)
-    val tvReferencesAvailable: TextView by bindView(R.id.tv_references_available)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bindView()
-
     }
 
     private fun bindView() {
+        viewSliceHelper.initWidget(
+            lifecycle,
+            findViewById(R.id.container_curriculum_vitae),
+            mainViewSlice,
+            personDetailsViewSlice,
+            appHighlightViewSlice,
+            technicalExperienceViewSlice,
+            employmentHistoryViewSlice,
+            educationViewSlice,
+            hobbiesAndInterestsViewSlice
+        )
         viewModel.getCurriculumVitae()
         viewModel.getMutableLiveDataCurriculumVitae().observe(this, Observer {
-            bindAppHighlightSection(it!!)
+            mainViewSlice.hideProgressLoader()
+            bindPersonDetails(it!!)
+            bindAppHighlightsSection(it)
             bindTechnicalExperienceSection(it)
             bindEmploymentHistorySection(it)
             bindEducationSection(it)
-            bindPersonDetails(it)
+            bindHobbiesAndInterests(it)
         })
     }
 
-    private fun bindAppHighlightSection(curriculumVitae: CurriculumVitae) {
-        // todo if app highlight list is empty, remove the title etc
-        rvAppHighlights.layoutManager = llmAppHighlight
-        rvAppHighlights.adapter = appHighlightAdapter
-        rvAppHighlights.isNestedScrollingEnabled = false
-        appHighlightAdapter.data = curriculumVitae.appHighlight
+    private fun bindPersonDetails(curriculumVitae: CurriculumVitae) {
+        personDetailsViewSlice.bindPersonName(curriculumVitae.person.name)
+        personDetailsViewSlice.bindPersonExperience(curriculumVitae.person.experience)
+        personDetailsViewSlice.bindPersonEmail(curriculumVitae.person.email)
+    }
+
+    private fun bindAppHighlightsSection(curriculumVitae: CurriculumVitae) {
+        if (curriculumVitae.technicalExperience.isNotEmpty()) {
+            appHighlightViewSlice.bindAppHighlights(curriculumVitae.appHighlight)
+        }
     }
 
     private fun bindTechnicalExperienceSection(curriculumVitae: CurriculumVitae) {
-        // todo if app highlight list is empty, remove the title etc
-        rvTechnicalExperience.layoutManager = llmTechnicalExperience
-        rvTechnicalExperience.adapter = technicalExperienceAdapter
-        rvTechnicalExperience.isNestedScrollingEnabled = false
-        technicalExperienceAdapter.data = curriculumVitae.technicalExperience
+        if (curriculumVitae.technicalExperience.isNotEmpty()) {
+            technicalExperienceViewSlice.bindTechnicalExperiences(curriculumVitae.technicalExperience)
+        }
     }
 
     private fun bindEmploymentHistorySection(curriculumVitae: CurriculumVitae) {
-        // todo if app highlight list is empty, remove the title etc
-        rvEmploymentHistory.layoutManager = llmEmploymentHistory
-        rvEmploymentHistory.adapter = employmentHistoryAdapter
-        rvEmploymentHistory.isNestedScrollingEnabled = false
-        employmentHistoryAdapter.data = curriculumVitae.employmentHistory
+        if (curriculumVitae.employmentHistory.isNotEmpty()) {
+            employmentHistoryViewSlice.bindEmploymentHistory(curriculumVitae.employmentHistory)
+        }
     }
 
     private fun bindEducationSection(curriculumVitae: CurriculumVitae) {
-        // todo if app highlight list is empty, remove the title etc
-        rvEducation.layoutManager = llmEducation
-        rvEducation.adapter = educationAdapter
-        rvEducation.isNestedScrollingEnabled = false
-        educationAdapter.data = curriculumVitae.education
+        if (curriculumVitae.education.isNotEmpty()) {
+            educationViewSlice.bindEducation(curriculumVitae.education)
+        }
     }
 
-    private fun bindPersonDetails(curriculumVitae: CurriculumVitae) {
-        tvPersonDetails.text = curriculumVitae.personDetails
-        tvReferencesAvailable.visibility =
-                if (curriculumVitae.showReferenceStatement) View.VISIBLE else View.GONE
-        tvPersonName.text = curriculumVitae.person.name
-        tvPersonExperience.text = curriculumVitae.person.experience
-        tvPersonEmail.text = curriculumVitae.person.email
+    private fun bindHobbiesAndInterests(curriculumVitae: CurriculumVitae) {
+        hobbiesAndInterestsViewSlice.bindPersonDetails(curriculumVitae.personDetails)
+        if (curriculumVitae.showReferenceStatement) hobbiesAndInterestsViewSlice.showReferencesAvailable()
     }
 }
