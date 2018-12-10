@@ -2,6 +2,8 @@ package com.curriculumvitae.android.di.component
 
 import com.curriculumvitae.android.CurriculumVitaeApplication
 import com.curriculumvitae.android.di.module.ActivityBuilderModule
+import com.curriculumvitae.android.di.module.ApiModule
+import com.curriculumvitae.android.di.module.NetworkModule
 import com.curriculumvitae.android.di.scope.PerApplication
 import dagger.BindsInstance
 import dagger.Component
@@ -11,7 +13,9 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
-        ActivityBuilderModule::class
+        ActivityBuilderModule::class,
+        NetworkModule::class,
+        ApiModule::class
     ]
 )
 interface AppComponent {

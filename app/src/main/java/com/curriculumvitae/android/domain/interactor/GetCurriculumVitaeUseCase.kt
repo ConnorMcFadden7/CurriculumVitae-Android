@@ -1,11 +1,15 @@
 package com.curriculumvitae.android.domain.interactor
 
 import com.curriculumvitae.android.data.model.*
+import com.curriculumvitae.android.domain.repository.CurriculumVitaeRepository
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class GetCurriculumVitaeUseCase @Inject constructor() {
+class GetCurriculumVitaeUseCase @Inject constructor(val curriculumVitaeRepository: CurriculumVitaeRepository) {
 
-    fun getCurriculumVitae(): CurriculumVitae {
+    /*fun getCurriculumVitae(): CurriculumVitae {
         //todo we could use this in a test
         var person = Person("Connor McFadden", "connormcfadden7@gmail.com", "4 years experience")
         var appHighlightList = mutableListOf<AppHighlight>()
@@ -35,7 +39,7 @@ class GetCurriculumVitaeUseCase @Inject constructor() {
         educationList.add(education)
         educationList.add(education)
 
-        return CurriculumVitae(
+        val cv = CurriculumVitae(
             person,
             appHighlightList,
             technicalExperienceList,
@@ -44,6 +48,17 @@ class GetCurriculumVitaeUseCase @Inject constructor() {
             "Love keeping up with tech",
             true
         )
+
+
+        val json = Gson().toJson(cv)
+        Log.e("ConnorDebug", "cv json: " + json)
+
+        return cv
+    }*/
+
+    fun getCurriculumVitae(): Observable<CurriculumVitae> {
+        return curriculumVitaeRepository.getCurriculumVitae().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
 }

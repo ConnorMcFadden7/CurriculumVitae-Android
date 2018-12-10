@@ -1,5 +1,6 @@
 package com.curriculumvitae.android.view.activity
 
+import android.arch.lifecycle.Observer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -7,11 +8,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.curriculumvitae.android.R
-import com.curriculumvitae.android.domain.interactor.GetCurriculumVitaeUseCase
+import com.curriculumvitae.android.data.model.CurriculumVitae
 import com.curriculumvitae.android.view.adapter.AppHighlightAdapter
 import com.curriculumvitae.android.view.adapter.EducationAdapter
 import com.curriculumvitae.android.view.adapter.EmploymentHistoryAdapter
 import com.curriculumvitae.android.view.adapter.TechnicalExperienceAdapter
+import com.curriculumvitae.android.view.viewmodel.MainViewModel
 import dagger.android.AndroidInjection
 import kotterknife.bindView
 import javax.inject.Inject
@@ -19,7 +21,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var getCurriculumVitaeUseCase: GetCurriculumVitaeUseCase
+    lateinit var viewModel: MainViewModel
     @Inject
     lateinit var appHighlightAdapter: AppHighlightAdapter
     @Inject
@@ -50,22 +52,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bindView()
-        bindAppHighlightSection()
-        bindTechnicalExperienceSection()
-        bindEmploymentHistorySection()
-        bindEducationSection()
-        bindPersonDetails()
+
     }
 
     private fun bindView() {
-        val curriculumVitae = getCurriculumVitaeUseCase.getCurriculumVitae()
-        tvPersonName.text = curriculumVitae.person.name
-        tvPersonExperience.text = curriculumVitae.person.experience
-        tvPersonEmail.text = curriculumVitae.person.email
+        viewModel.getCurriculumVitae()
+        viewModel.getMutableLiveDataCurriculumVitae().observe(this, Observer {
+            bindAppHighlightSection(it!!)
+            bindTechnicalExperienceSection(it)
+            bindEmploymentHistorySection(it)
+            bindEducationSection(it)
+            bindPersonDetails(it)
+        })
     }
 
-    private fun bindAppHighlightSection() {
-        val curriculumVitae = getCurriculumVitaeUseCase.getCurriculumVitae()
+    private fun bindAppHighlightSection(curriculumVitae: CurriculumVitae) {
         // todo if app highlight list is empty, remove the title etc
         rvAppHighlights.layoutManager = llmAppHighlight
         rvAppHighlights.adapter = appHighlightAdapter
@@ -73,8 +74,7 @@ class MainActivity : AppCompatActivity() {
         appHighlightAdapter.data = curriculumVitae.appHighlight
     }
 
-    private fun bindTechnicalExperienceSection() {
-        val curriculumVitae = getCurriculumVitaeUseCase.getCurriculumVitae()
+    private fun bindTechnicalExperienceSection(curriculumVitae: CurriculumVitae) {
         // todo if app highlight list is empty, remove the title etc
         rvTechnicalExperience.layoutManager = llmTechnicalExperience
         rvTechnicalExperience.adapter = technicalExperienceAdapter
@@ -82,8 +82,7 @@ class MainActivity : AppCompatActivity() {
         technicalExperienceAdapter.data = curriculumVitae.technicalExperience
     }
 
-    private fun bindEmploymentHistorySection() {
-        val curriculumVitae = getCurriculumVitaeUseCase.getCurriculumVitae()
+    private fun bindEmploymentHistorySection(curriculumVitae: CurriculumVitae) {
         // todo if app highlight list is empty, remove the title etc
         rvEmploymentHistory.layoutManager = llmEmploymentHistory
         rvEmploymentHistory.adapter = employmentHistoryAdapter
@@ -91,8 +90,7 @@ class MainActivity : AppCompatActivity() {
         employmentHistoryAdapter.data = curriculumVitae.employmentHistory
     }
 
-    private fun bindEducationSection() {
-        val curriculumVitae = getCurriculumVitaeUseCase.getCurriculumVitae()
+    private fun bindEducationSection(curriculumVitae: CurriculumVitae) {
         // todo if app highlight list is empty, remove the title etc
         rvEducation.layoutManager = llmEducation
         rvEducation.adapter = educationAdapter
@@ -100,9 +98,12 @@ class MainActivity : AppCompatActivity() {
         educationAdapter.data = curriculumVitae.education
     }
 
-    private fun bindPersonDetails() {
-        tvPersonDetails.text = getCurriculumVitaeUseCase.getCurriculumVitae().personDetails
+    private fun bindPersonDetails(curriculumVitae: CurriculumVitae) {
+        tvPersonDetails.text = curriculumVitae.personDetails
         tvReferencesAvailable.visibility =
-                if (getCurriculumVitaeUseCase.getCurriculumVitae().showReferenceStatement) View.VISIBLE else View.GONE
+                if (curriculumVitae.showReferenceStatement) View.VISIBLE else View.GONE
+        tvPersonName.text = curriculumVitae.person.name
+        tvPersonExperience.text = curriculumVitae.person.experience
+        tvPersonEmail.text = curriculumVitae.person.email
     }
 }

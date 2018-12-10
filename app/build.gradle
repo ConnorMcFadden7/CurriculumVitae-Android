@@ -23,6 +23,8 @@ android {
 
 dependencies {
     final DAGGER_VERSION = '2.19'
+    final RETROFIT_VERSION = '2.5.0'
+    final RX_ANDROID_VERSION = '2.1.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -33,7 +35,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     /** SUPPORT LIBS **/
-    implementation "com.android.support:appcompat-v7:27.1.1"
     implementation "com.android.support:recyclerview-v7:27.1.1"
 
     /** BUTTERKNIFE **/
@@ -45,4 +46,17 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$DAGGER_VERSION"
     implementation "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
     kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
+
+    /** RETROFIT **/
+    implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
+    implementation("com.squareup.retrofit2:converter-simplexml:$RETROFIT_VERSION") {
+        exclude module: 'stax-api'
+        exclude module: 'stax'
+        exclude module: 'xpp3'
+    }
+
+    /** RX JAVA **/
+    implementation "io.reactivex.rxjava2:rxandroid:$RX_ANDROID_VERSION"
 }
