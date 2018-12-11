@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.curriculumvitae.android.R
 import com.curriculumvitae.android.data.model.CurriculumVitae
+import com.curriculumvitae.android.data.model.CurriculumVitaeResponse
+import com.curriculumvitae.android.view.factory.DialogFactory
 import com.curriculumvitae.android.view.viewmodel.MainViewModel
 import com.curriculumvitae.android.view.viewslice.*
 import dagger.android.AndroidInjection
@@ -51,15 +53,22 @@ class MainActivity : AppCompatActivity() {
             educationViewSlice,
             hobbiesAndInterestsViewSlice
         )
-        viewModel.getCurriculumVitae()
+        viewModel.getCurriculumVitae(this)
+        val dialogFactory = DialogFactory()
         viewModel.getMutableLiveDataCurriculumVitae().observe(this, Observer {
-            mainViewSlice.hideProgressLoader()
-            bindPersonDetails(it!!)
-            bindAppHighlightsSection(it)
-            bindTechnicalExperienceSection(it)
-            bindEmploymentHistorySection(it)
-            bindEducationSection(it)
-            bindHobbiesAndInterests(it)
+            if (it!!.statusCode == CurriculumVitaeResponse.StatusCode.SUCCESS) {
+                mainViewSlice.hideProgressLoader()
+                bindPersonDetails(it.curriculumVitae)
+                bindAppHighlightsSection(it.curriculumVitae)
+                bindTechnicalExperienceSection(it.curriculumVitae)
+                bindEmploymentHistorySection(it.curriculumVitae)
+                bindEducationSection(it.curriculumVitae)
+                bindHobbiesAndInterests(it.curriculumVitae)
+            } else if (it.statusCode == CurriculumVitaeResponse.StatusCode.NO_NETWORK) {
+                dialogFactory.showNoInternetDialog(this)
+            } else {
+                dialogFactory.showErrorDialog(this)
+            }
         })
     }
 

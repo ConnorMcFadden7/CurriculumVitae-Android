@@ -2,32 +2,37 @@ package com.curriculumvitae.android.view.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
-import com.curriculumvitae.android.data.model.CurriculumVitae
+import android.content.Context
+import com.curriculumvitae.android.data.model.CurriculumVitaeResponse
 import com.curriculumvitae.android.domain.interactor.GetCurriculumVitaeUseCase
+import com.curriculumvitae.android.utils.NetworkUtils
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(val getCurriculumVitaeUseCase: GetCurriculumVitaeUseCase) : ViewModel() {
+class MainViewModel @Inject constructor(
+    val getCurriculumVitaeUseCase: GetCurriculumVitaeUseCase,
+    val networkUtils: NetworkUtils
+) : ViewModel() {
 
-    private var mutableLiveData: MutableLiveData<CurriculumVitae> = MutableLiveData()
+    private var mutableLiveData: MutableLiveData<CurriculumVitaeResponse> = MutableLiveData()
 
-    fun getCurriculumVitae() {
-//        acceptTermsUseCase.acceptTerms(termsAndConditions)
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribeOn(Schedulers.io())
-//            .subscribe({ mutableLiveDataAcceptTerms.setValue(1) },
-//                { throwable -> mutableLiveDataAcceptTerms.setValue(0) })
-        getCurriculumVitaeUseCase.getCurriculumVitae().subscribe({
-            mutableLiveData.value = it
-            Log.e("ConnorDebug", "testing name: " + it.person.name)
-        }, {
-            // handle error
-            Log.e("ConnorDebug", "error: " + it.localizedMessage)
-
-        })
+    fun getCurriculumVitae(context: Context) {
+        val curriculumVitaeResponse = CurriculumVitaeResponse()
+        if (networkUtils.isConnected(context)) {
+            getCurriculumVitaeUseCase.getCurriculumVitae().subscribe({
+                curriculumVitaeResponse.curriculumVitae = it
+                curriculumVitaeResponse.statusCode = CurriculumVitaeResponse.StatusCode.SUCCESS
+                mutableLiveData.value = curriculumVitaeResponse
+            }, {
+                curriculumVitaeResponse.statusCode = CurriculumVitaeResponse.StatusCode.GENERIC_ERROR
+                mutableLiveData.value = curriculumVitaeResponse
+            })
+        } else {
+            curriculumVitaeResponse.statusCode = CurriculumVitaeResponse.StatusCode.NO_NETWORK
+            mutableLiveData.value = curriculumVitaeResponse
+        }
     }
 
-    fun getMutableLiveDataCurriculumVitae(): MutableLiveData<CurriculumVitae> {
+    fun getMutableLiveDataCurriculumVitae(): MutableLiveData<CurriculumVitaeResponse> {
         return mutableLiveData
     }
 }

@@ -10,4 +10,11 @@
     <string name="curriculum_vitae_education_title">%1$s, %2$s - %3$s</string>
     <string name="curriculum_vitae_hobbies_and_interests_label">Hobbies &amp; Interests</string>
     <string name="curriculum_vitae_references_available_label">REFERENCES AVAILABLE UPON REQUEST</string>
+
+    <!-- Error Handling -->
+    <string name="generic_no_internet_connection_cta">Settings</string>
+    <string name="generic_no_internet_connection_title">No internet connection</string>
+    <string name="generic_no_internet_connection_message">Connection is required to continue, please check your settings.</string>
+    <string name="generic_error_dialog_title">Oops! An error occurred</string>
+
 </resources>
