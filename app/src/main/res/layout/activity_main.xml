@@ -46,27 +46,15 @@
                 tools:text="connormcfadden7@gmail.com"/>
 
         <TextView
+                style="@style/GenericSubTitleStyle"
                 android:id="@+id/tv_app_highlight_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/curriculum_vitae_app_highlight_label"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textSize="20sp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tv_person_email"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
         <View
+                style="@style/GenericViewSeparator"
                 android:id="@+id/view_app_highlight_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_separator"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tv_app_highlight_label"/>
 
         <android.support.v7.widget.RecyclerView
@@ -79,27 +67,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_app_highlight_separator"/>
 
         <TextView
+                style="@style/GenericSubTitleStyle"
                 android:id="@+id/tv_technical_experience_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/curriculum_vitae_technical_experience_label"
-                android:textSize="20sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_app_highlight"/>
 
         <View
+                style="@style/GenericViewSeparator"
                 android:id="@+id/view_technical_experience_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_separator"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tv_technical_experience_label"/>
 
         <android.support.v7.widget.RecyclerView
@@ -112,27 +88,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_technical_experience_separator"/>
 
         <TextView
+                style="@style/GenericSubTitleStyle"
                 android:id="@+id/tv_employment_history_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/curriculum_vitae_employment_history_label"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textSize="20sp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_technical_experience"/>
 
         <View
+                style="@style/GenericViewSeparator"
                 android:id="@+id/view_employment_history_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_separator"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tv_employment_history_label"/>
 
         <android.support.v7.widget.RecyclerView
@@ -145,27 +109,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_employment_history_separator"/>
 
         <TextView
+                style="@style/GenericSubTitleStyle"
                 android:id="@+id/tv_education_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/curriculum_vitae_education_label"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textSize="20sp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_employment_history"/>
 
         <View
+                style="@style/GenericViewSeparator"
                 android:id="@+id/view_education_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_separator"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tv_education_label"/>
 
         <android.support.v7.widget.RecyclerView
@@ -178,27 +130,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_education_separator"/>
 
         <TextView
+                style="@style/GenericSubTitleStyle"
                 android:id="@+id/tv_person_details_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/curriculum_vitae_hobbies_and_interests_label"
-                android:layout_marginLeft="20dp"
-                android:textSize="20sp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/rv_education"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
         <View
+                style="@style/GenericViewSeparator"
                 android:id="@+id/view_person_details_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey_separator"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tv_person_details_label"/>
 
         <TextView
