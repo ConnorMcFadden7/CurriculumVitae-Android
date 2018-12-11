@@ -120,7 +120,6 @@ class MainActivityTest {
 
     @Test
     fun test_hobbiesAndInterests() {
-        onView(withId(R.id.tv_person_details)).check(matches(withText(curriculumVitae.personDetails)))
         onView(withId(R.id.container_curriculum_vitae)).perform(swipeUp(), click())
         onView(withId(R.id.tv_person_details_label)).check(matches((isDisplayed())))
         onView(withId(R.id.view_person_details_separator)).check(matches((isDisplayed())))
